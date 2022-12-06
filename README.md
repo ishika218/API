@@ -1,3 +1,5 @@
-Legal Businesses In NYC
+Legal Businesses In NYC.
+
+
 This API is used to investigate a connection between certain New York City neighborhoods and the more prevalent licensed industries in those neighborhoods
 The most frequent business sector in places like the Bronx, Brooklyn, and Manhattan is cigarette retail dealers, while the most frequent business sector in Queens, Staten Island, and places outside of New York is home improvement contractors. Information of this nature is crucial and it is interesting because it might shed light on the socioeconomic conditions of certain regions and give more insight on why some industries are as well-liked as they are. With this information, I can conduct further research in these areas to highlight why the data indicates what it does. For my final project, even if I don’t use the these variables and parameters and a treemap chart, I can still use this information to gain a deeper understanding of why certain firms operate in various New York neighborhoods the way they do and how this might be extended to the rest of the US
