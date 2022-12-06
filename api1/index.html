@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <!-- JQUERY -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Own CSS file -->
+    <link rel="stylesheet" href="index.css">
+	<style> .btn{border:1px solid #BA00AE; padding:5px;display:inline-block} </style>
+    <!-- Lexend Font semibold 600-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@600&display=swap" rel="stylesheet">
+    <!-- Chart library -->
+    <script src="https://cdn.anychart.com/releases/8.0.1/js/anychart-core.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.0.1/js/anychart-pie.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.0.0/js/anychart-base.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src='https://cdn.plot.ly/plotly-2.11.1.min.js'></script>
+
+</head>
+
+<body>  
+
+        <h1> Legal Businesses <br> in NYC </h1>
+        <img src="newyorkSkyline.png" id="nySkyline">
+
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+
+    <p style="text-align: center; padding-left: 150px; padding-right: 150px; padding-top: 30px; padding-bottom: 30px;"> 
+        This data set relates to businesses and people who require a DCA license in order to legally conduct business in New York. Not included are temporary street vendors and tour leaders. This information is updated every week and has been gathered since 02/22/16. Although the dataset contains 274,000 rows of data, this analysis just looks at the first 5000 rows.  
+    </p>
+    <!-- <h2 class="subheading"> Which businesses <br> are still active? </h2> -->
+
+
+    <div class="tablecontainer">
+        <div>
+            <p class="content">
+                1. Which businesses are still active?
+                <!-- <p style="padding-left: 20px; margin-top: -10px; color: #C1E1C1;"></p> -->
+                <button class="btn btn-primary btnCustom" id="btn_1"> Click to Find Out!</button>
+                <div id="textDisplayed1"></div> <br>
+                <!-- Remove hover effect from button, and add an if statement saying how many are active
+                or inactive businesses -->
+                <table style="margin-left: 10px;"id="table-status" class="table table-bordered tablecontent">
+                    <tr><th>Business Name</th><th>Status</th></tr>
+                </table> 
+                <br><br>
+            </p>
+            </p>
+        </div>
+    </div>
+    <div class="tablecontainer" style="width: 825px; overflow: hidden; ">
+        <div>
+            <p class="content contentFollow">
+                2. Let's visualize this information. Click the button below to generate a pie chart!
+                <button style="margin-top: 15px;" class="btn btn-primary btnCustom" id="btn_2"> Visualize Me!</button>
+                <div id="textDisplayed2"> </div>
+            </p>
+            </p>
+        </div>
+    </div>
+
+    <div class="tablecontainer">
+        <div>
+            <p class="content">
+                3. What is the license type of these businesses?
+                <!-- <p style="padding-left: 20px; margin-top: -10px; color: #C1E1C1;"></p> -->
+                <button style="margin-top: 15px;" class="btn btn-primary btnCustom" id="btn_3"> Click to Find Out!</button>
+                <div id="textDisplayed3"></div> <br>
+                <table style="margin-left: 10px"id="table-address" class="table table-bordered tablecontent">
+                    <tr><th>Business Name</th><th>License Type</th></tr>
+                </table> 
+                <br><br>
+            </p>
+            </p>
+        </div>
+    </div>
+
+    <div class="tablecontainer" style="width: 825px; overflow: hidden; ">
+        <div>
+            <p class="content contentFollow">
+                4. Let's visualize this information. Click the button below to generate a pie chart!
+                <button style="margin-top: 15px;" class="btn btn-primary btnCustom" id="btn_4"> Visualize Me!</button>
+                <div id="textDisplayed4"> </div>
+            </p>
+            </p>
+        </div>
+    </div>
+
+
+
+</body>
+
+<script>
+
+
+function countActive() {
+
+    $.getJSON("https://data.cityofnewyork.us/resource/w7w3-xahh.json?$limit=5000",function(result){	
+		console.log(result);
+        let sum = 0;
+        let sum2 = 0;
+        let sum3 = 0;
+        let i = 0;
+        
+
+        for(let x=0; x < result.length; x++){
+			if (result[x]["license_status"] == "Active"){
+                sum = sum + 1;
+				console.log(sum);
+			}
+		}
+        for(let x=0; x < result.length; x++){
+			if (result[x]["license_status"] == "Inactive"){
+                sum2 = sum2 + 1;
+				console.log(sum2);
+			}
+		}
+
+    
+ 
+        $('#textDisplayed1').html("Out of the 5000 businesses in this database, " + sum + 
+        " are active and " + sum2 + " are inactive. <br> You can scroll through the table.");
+
+	});
+}
+
+function displayStatus() {
+
+	// here we are emptying the content of the table.
+	$("#table-status").html("<tr><th>Business Name</th><th>Status</th></tr>");
+	
+	 $.getJSON("https://data.cityofnewyork.us/resource/w7w3-xahh.json?$limit=5000",function(result){	
+		console.log(result);
+		let i = 0;
+	
+		for (; i < result.length; i++) {
+            if (result[i]["address_state"] != "NY") { 
+                $('#table-status').append("");
+            } else {
+                $('#table-status').append("<tr><td>" + result[i]["business_name"]+ "</td><td>" + 
+                result[i]["license_status"] + "</td></tr>");
+            }
+		}
+	});
+}
+
+function StatusPieChart() {
+
+	$.getJSON("https://data.cityofnewyork.us/resource/w7w3-xahh.json?$limit=5000", function(status){
+		console.log(status);
+		
+		var one = [];
+		var two = [];
+
+		for(let i=0; i < status.length;i++){
+			let data = status[i]['license_status'];
+			if (one.indexOf(data)==-1){
+				one[one.length] = data;
+				two[two.length] = 0;
+			}
+			two[one.indexOf(data)] += 1;
+		}
+
+		console.log(one);
+		console.log(two);
+		
+		var imageChartData = '';
+		var imageChartLabels = '';
+		for (let i =0; i<one.length; i++){
+			imageChartLabels += one[i];
+			imageChartData+=  two[i];
+			if (i<one.length-1){
+				imageChartLabels+='|';
+				imageChartData+=','
+			}
+		}
+
+		console.log(imageChartData);
+		console.log(imageChartLabels);
+		
+		var imageHTMLcode = '<img src="https://image-charts.com/chart?cht=p3&chs=600x400&chd=t:'
+        +imageChartData+'&chl='+imageChartLabels+'" alt="Static Chart"/>';
+		console.log(imageHTMLcode);
+		$('#textDisplayed2').html(imageHTMLcode);
+	});
+
+}
+
+function countType() {
+    $.getJSON("https://data.cityofnewyork.us/resource/w7w3-xahh.json?$limit=5000",function(result){	
+		console.log(result);
+        let sum = 0;
+        let sum2 = 0;
+        let sum3 = 0;
+        let i = 0;
+        
+
+        for(let x=0; x < result.length; x++){
+			if (result[x]["license_type"] == "Individual"){
+                sum = sum + 1;
+				console.log(sum);
+			}
+		}
+        for(let x=0; x < result.length; x++){
+			if (result[x]["license_type"] == "Business"){
+                sum2 = sum2 + 1;
+				console.log(sum2);
+			}
+		}
+
+ 
+        $('#textDisplayed3').html("Out of the 5000 businesses in this database, " + sum + 
+        " are under an Individual license and " + sum2 + 
+        " are under a Business license. <br> Scroll through the table.");
+
+	});
+}
+
+function displayType() {
+    $("#table-address").html("<tr><th>Business Name</th><th>License Type</th></tr>");
+	
+    $.getJSON("https://data.cityofnewyork.us/resource/w7w3-xahh.json?$limit=5000",function(result){	
+       console.log(result);
+       let i = 0;
+       for (; i < result.length; i++) {
+               $('#table-address').append("<tr><td>" + result[i]["business_name"]+ "</td><td>" + 
+                result[i]["license_type"] + "</td> </tr>");
+       }
+   });
+}
+
+function LicenseTypePieChart() {
+
+    $.getJSON("https://data.cityofnewyork.us/resource/w7w3-xahh.json?$limit=5000", function(status){
+		console.log(status);
+		
+		var one = [];
+		var two = [];
+
+		for(let i=0; i < status.length;i++){
+			let data = status[i]['license_type'];
+			if (one.indexOf(data)==-1){
+				one[one.length] = data;
+				two[two.length] = 0;
+			}
+			two[one.indexOf(data)] += 1;
+		}
+
+		console.log(one);
+		console.log(two);
+		
+		var imageChartData = '';
+		var imageChartLabels = '';
+		for (let i =0; i<one.length; i++){
+			imageChartLabels += one[i];
+			imageChartData+=  two[i];
+			if (i<one.length-1){
+				imageChartLabels+='|';
+				imageChartData+=','
+			}
+		}
+
+		console.log(imageChartData);
+		console.log(imageChartLabels);
+		
+		var imageHTMLcode = '<img src="https://image-charts.com/chart?cht=p3&chs=600x400&chd=t:'
+        +imageChartData+'&chl='+imageChartLabels+'" alt="Static Chart"/>';
+		console.log(imageHTMLcode);
+		$('#textDisplayed4').html(imageHTMLcode);
+	});
+
+}
+
+$('#btn_1').click(function(){
+    countActive();
+	displayStatus();
+})
+
+$('#btn_2').click(function(){
+    StatusPieChart();
+})
+
+$('#btn_3').click(function(){
+    countType();
+    displayType();
+})
+
+$('#btn_4').click(function(){
+    LicenseTypePieChart();
+})
+
+
+</script>
+</html>
